@@ -30,14 +30,14 @@
         </data>
     </route>
 
-    <route url="/V1/ratings/:storeId" method="GET">
+    <route url="/V1/ratings" method="GET">
         <service class="MagentoHackathon\ReviewsApi\Api\RatingsRepositoryInterface" method="getList" />
         <resources>
             <resource ref="Magento_Product::manage"/>
         </resources>
     </route>
 
-    <route url="/V1/ratings/:productId/:storeId" method="GET">
+    <route url="/V1/ratings/:productId" method="GET">
         <service class="MagentoHackathon\ReviewsApi\Api\RatingsRepositoryInterface" method="getByProduct" />
         <resources>
             <resource ref="Magento_Product::manage"/>

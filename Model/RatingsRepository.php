@@ -20,16 +20,16 @@ class RatingsRepository implements RatingsRepositoryInterface
         $this->ratingFactory = $ratingFactory;
     }
 
-    public function getByProduct($productId, $storeId = 1)
+    public function getByProduct($productId)
     {
-        $results = $this->_fetchAggregatedResults($storeId, $productId);
+        $results = $this->_fetchAggregatedResults($productId);
         return $this->_parseResults($results);
     }
 
 
-    public function getList($storeId = 1)
+    public function getList()
     {
-        $results = $this->_fetchAggregatedResults($storeId);
+        $results = $this->_fetchAggregatedResults();
         return $this->_parseResults($results);
     }
 
@@ -44,27 +44,23 @@ class RatingsRepository implements RatingsRepositoryInterface
 
             $rating->setRating(ceil($value['vote_value_sum'] / $value['vote_count']))
                 ->setCount($value['vote_count']);
-            
+
             $ratings[] = $rating;
-//            $ratings[] =
-//            $ratings['items'][$value['entity_pk_value']] = [
-//                'rating' => ceil($value['vote_value_sum'] / $value['vote_count']),
-//                'count' => $value['vote_count']
-//            ];
 
         }
 
         return $ratings;
     }
 
-    protected function _fetchAggregatedResults($storeId = 1, $productId = null)
+    protected function _fetchAggregatedResults($productId = null)
     {
+        $queryBind = [];
         /** @var AdapterInterface $connection */
         $connection = $this->resource->getConnection('core_read');
 
-        $query = 'SELECT * FROM rating_option_vote_aggregated WHERE store_id = :storeId';
+        $query = 'SELECT * FROM rating_option_vote_aggregated WHERE store_id = 1';
 
-        $queryBind['storeId'] = $storeId;
+//        $queryBind['storeId'] = $storeId;
         if($productId) {
             $query .= ' AND entity_pk_value = :productId';
             $queryBind['productId'] = $productId;
