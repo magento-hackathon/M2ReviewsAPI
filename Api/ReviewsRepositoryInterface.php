@@ -12,23 +12,14 @@ interface ReviewsRepositoryInterface
      * @param $productId
      * @return array
      */
-    public function get($productId);
+    public function getByProductId($productId);
     
-    /**
-     * Get all reviews
-     * 
-     * @param string $productId
-     * @return array
-     */
-    public function getList();
-
-
     /**
      * Save Review
      * 
      * @param Review $review
      * @return mixed[]
      */
-    public function save(Review $review);
+    public function post(Review $review);
 
 }
