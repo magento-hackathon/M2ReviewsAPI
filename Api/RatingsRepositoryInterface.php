@@ -8,15 +8,15 @@ interface RatingsRepositoryInterface
     /**
      * Get Ratings list by product
      * 
-     * @param $productId
-     * @return RatingInterface[]
+     * @param int $productId
+     * @return \MagentoHackathon\ReviewsApi\Api\Data\RatingInterface[]
      */
     public function getByProduct($productId);
 
     /**
      * Get All Ratings
      * 
-     * @return RatingInterface[]
+     * @return \MagentoHackathon\ReviewsApi\Api\Data\RatingInterface[]
      */
     public function getList();
     
