@@ -7,6 +7,9 @@ use Magento\Review\Model\Review as CoreReview;
 
 class ReviewsRepository implements ReviewsRepositoryInterface
 {
+
+    const PRODUCT_ENTITY_ID = 1;
+
     public function __construct(
         \Magento\Review\Model\ResourceModel\Review\CollectionFactory $collectionFactory,
         \Magento\Review\Model\ReviewFactory $reviewFactory,
@@ -31,7 +34,7 @@ class ReviewsRepository implements ReviewsRepositoryInterface
 
     }
 
-    public function getByProductId($productId)
+    public function get($productId)
     {
         $collection = $this->collectionFactory->create()->addFieldToFilter('entity_pk_value', $productId)
             ->addFieldToFilter('entity_id', self::PRODUCT_ENTITY_ID);

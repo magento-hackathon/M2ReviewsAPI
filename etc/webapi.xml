@@ -10,7 +10,7 @@
 
     <!-- Product Service -->
     <route url="/V1/reviews/:productId" method="GET">
-        <service class="MagentoHackathon\ReviewsApi\Api\ReviewsRepositoryInterface" method="getByProductId" />
+        <service class="MagentoHackathon\ReviewsApi\Api\ReviewsRepositoryInterface" method="get" />
         <resources>
             <resource ref="Magento_Product::manage"/>
         </resources>

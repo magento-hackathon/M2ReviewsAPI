@@ -9,11 +9,11 @@ interface ReviewsRepositoryInterface
     /**
      * Get Reviews By productId
      * 
-     * @param $productId
+     * @param int $productId
      * @return array
      */
-    public function getByProductId($productId);
-    
+    public function get($productId);
+
     /**
      * Save Review
      * 
