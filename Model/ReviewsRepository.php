@@ -31,15 +31,10 @@ class ReviewsRepository implements ReviewsRepositoryInterface
 
     }
 
-    public function getList()
-    {
-
-    }
-
-    public function get($productId)
+    public function getByProductId($productId)
     {
         $collection = $this->collectionFactory->create()->addFieldToFilter('entity_pk_value', $productId)
-        ->addFieldToFilter('entity_id', 1);
+            ->addFieldToFilter('entity_id', self::PRODUCT_ENTITY_ID);
         $collection->load();
         $collection->addRateVotes();
 
@@ -47,11 +42,11 @@ class ReviewsRepository implements ReviewsRepositoryInterface
         foreach($collection->getItems() as $item) {
             $itemArray = $item->getData();
             unset($itemArray['rating_votes']);
+
             /** @var \Magento\Review\Model\ResourceModel\Rating\Option\Vote\Collection $votes */
             $votes = $item->getRatingVotes();
             $vote = current($votes->getData());
-            unset($vote['remote_ip']);
-            unset($vote['remote_ip_long']);
+
             $itemArray['rating'] = $vote['value'];
 
             $allItems[] = $itemArray;
@@ -60,7 +55,7 @@ class ReviewsRepository implements ReviewsRepositoryInterface
         return $allItems;
     }
 
-    public function save(\MagentoHackathon\ReviewsApi\Model\Review $reviewSkeleton)
+    public function post(\MagentoHackathon\ReviewsApi\Model\Review $reviewSkeleton)
     {
         if($this->_hasMadeReview($reviewSkeleton->getCustomerId(), $reviewSkeleton->getProductId())) {
             $ret['error'][] = ['message' => "Error: you have already made a review"];
@@ -90,51 +85,9 @@ class ReviewsRepository implements ReviewsRepositoryInterface
 
         $review->aggregate();
 
-        // update product rating custom attribute
-        $connection = $this->resource->getConnection('core_read');
-        $aggregatedVote = $connection->fetchRow(
-            'SELECT * FROM rating_option_vote_aggregated WHERE store_id = 1 AND entity_pk_value = :productId',
-            ['productId' => $reviewSkeleton->getProductId()]
-        );
-
-        $product = $this->productFactory->create()
-            ->load($reviewSkeleton->getProductId());
-
-        $product->setData('rating', ceil($aggregatedVote['vote_value_sum'] / $aggregatedVote['vote_count']))
-            ->setData('rating_count', $aggregatedVote['vote_count']);
-
-        try {
-            $this->resourceModel->save($product);
-        } catch (\Magento\Eav\Model\Entity\Attribute\Exception $exception) {
-            throw \Magento\Framework\Exception\InputException::invalidFieldValue(
-                $exception->getAttributeCode(),
-                $product->getData($exception->getAttributeCode()),
-                $exception
-            );
-        } catch (\Exception $e) {
-            throw new \Magento\Framework\Exception\CouldNotSaveException(__('Unable to save product review'));
-        }
         return [['status' => 'success', 'message' => __("Thank you for posting your review")]];
+
     }
-
-    public function getRatingsList()
-    {
-        $connection = $this->resource->getConnection('core_read');
-
-        $return = $connection->fetchAll('SELECT * FROM rating_option_vote_aggregated WHERE store_id = 1');
-
-        if(count($return) == 0) return [];
-
-        foreach($return as $value) {
-            $ratings['items'][$value['entity_pk_value']] = [
-                'rating' => ceil($value['vote_value_sum'] / $value['vote_count']),
-                'count' => $value['vote_count']
-            ];
-        }
-
-        return $ratings;
-    }
-
 
     protected function _hasMadeReview($customerId, $productId)
     {

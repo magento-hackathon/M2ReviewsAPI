@@ -9,13 +9,10 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
 
     <!-- Product Service -->
-    <route url="/V1/reviews" method="GET">
-        <service class="MagentoHackathon\ReviewsApi\Api\ReviewsRepositoryInterface" method="getList" />
-    </route>
     <route url="/V1/reviews/:productId" method="GET">
         <service class="MagentoHackathon\ReviewsApi\Api\ReviewsRepositoryInterface" method="getByProductId" />
         <resources>
-            <resource ref="anonymous"/>
+            <resource ref="Magento_Product::manage"/>
         </resources>
     </route>
     <route url="/V1/reviews" method="POST">
