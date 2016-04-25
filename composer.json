@@ -1,0 +1,17 @@
+{
+  "name": "magento-hackathon/reviews_api",
+  "description": "Reviews and Ratings API",
+  "type": "magento2-module",
+  "version": "dev-master",
+  "license": [
+    "GPL-3.0"
+  ],
+  "extra": {
+    "map": [
+      [
+        "*",
+        "MagentoHackathon/ReviewsApi"
+      ]
+    ]
+  }
+}

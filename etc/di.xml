@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <preference for="MagentoHackathon\ReviewsApi\Api\ReviewsRepositoryInterface" type="MagentoHackathon\ReviewsApi\Model\ReviewsRepository" />
+    <preference for="MagentoHackathon\ReviewsApi\Api\RatingsRepositoryInterface" type="MagentoHackathon\ReviewsApi\Model\RatingsRepository" />
+
+</config>

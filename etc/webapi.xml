@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <!-- Product Service -->
+    <route url="/V1/reviews" method="GET">
+        <service class="MagentoHackathon\ReviewsApi\Api\ReviewsRepositoryInterface" method="getList" />
+    </route>
+    <route url="/V1/reviews/:productId" method="GET">
+        <service class="MagentoHackathon\ReviewsApi\Api\ReviewsRepositoryInterface" method="getByProductId" />
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/reviews" method="POST">
+        <service class="MagentoHackathon\ReviewsApi\Api\ReviewsRepositoryInterface" method="post" />
+        <resources>
+            <resource ref="Magento_Customer::manage"/>
+        </resources>
+        <data>
+            <parameter name="title" force="true">%title%</parameter>
+            <parameter name="detail" force="true">%detail%</parameter>
+            <parameter name="nickname" force="true">%nickname%</parameter>
+            <parameter name="customer_id" force="true">%customer_id%</parameter>
+            <parameter name="rating" force="true">%rating%</parameter>
+            <parameter name="product_id" force="true">%product_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/ratings" method="GET">
+        <service class="MagentoHackathon\ReviewsApi\Api\RatingsRepositoryInterface" method="getList" />
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>
